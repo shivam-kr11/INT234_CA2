@@ -436,4 +436,36 @@ print("Recall:", recall_score(y_test, y_pred_knn))
 print("F1 Score:", f1_score(y_test, y_pred_knn))
 print("=====================================================")
 
+#================ TRAINING NAIVE BAYES ================
+from sklearn.naive_bayes import GaussianNB
+model_nb = GaussianNB(priors=[0.5, 0.5])
+model_nb.fit(X_train, y_train)
+y_pred_nb = model_nb.predict(X_test)
+
+#================ EVALUATING NAIVE BAYES ================
+print("================NAIVE BAYES ================")
+print("Accuracy:", accuracy_score(y_test, y_pred_nb))
+print("Precision:", precision_score(y_test, y_pred_nb))
+print("Recall:", recall_score(y_test, y_pred_nb))
+print("F1 Score:", f1_score(y_test, y_pred_nb))
+print("=====================================================")
+
+
+
+#================ TRAINING DECISION TREE ================
+
+from sklearn.tree import DecisionTreeClassifier
+model_dt = DecisionTreeClassifier(random_state=42)
+model_dt.fit(X_train, y_train)
+y_pred_dt = model_dt.predict(X_test)
+
+#================ EVALUATING DECISION TREE ================
+print("================Decision Tree ================")
+print("Accuracy:", accuracy_score(y_test, y_pred_dt))
+print("Precision:", precision_score(y_test, y_pred_dt))
+print("Recall:", recall_score(y_test, y_pred_dt))
+print("F1 Score:", f1_score(y_test, y_pred_dt))
+
+print("==============================================")
+
 
