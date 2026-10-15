@@ -396,5 +396,44 @@ print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 print("=====================================================")
 
+#================ TRAINING KNN ================
+from sklearn.neighbors import KNeighborsClassifier
 
-   
+for k in range(1, 21):
+    model_knn = KNeighborsClassifier(n_neighbors=k)
+    model_knn.fit(X_train, y_train)
+    y_pred_k = model_knn.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred_k)
+    print("K =", k, "Accuracy =", accuracy)
+    
+#================Suitable K  ================
+for k in range(1,21):
+    model_knn = KNeighborsClassifier(n_neighbors=k,weights="distance",metric="minkowski")
+    model_knn.fit(X_train, y_train)
+
+    y_pred = model_knn.predict(X_test)
+
+    print(
+    "K =", k,
+    "| Accuracy =", round(accuracy_score(y_test, y_pred), 3),
+    "| Precision =", round(precision_score(y_test, y_pred), 3),
+    "| Recall =", round(recall_score(y_test, y_pred), 3),
+    "| F1 Score =", round(f1_score(y_test, y_pred), 3)
+)
+
+#Conclusion-> As K increases, accuracy generally rises, but recall and F1-score fall sharply. At K = 14 and above, the model fails to identify any placed students.
+#choose k as 1 to 5
+
+model_knn = KNeighborsClassifier(n_neighbors=2)
+model_knn.fit(X_train, y_train)
+y_pred_knn = model_knn.predict(X_test)
+
+#================ EVALUATING KNN ================
+print("================ KNN ================")
+print("Accuracy:", accuracy_score(y_test, y_pred_knn))
+print("Precision:", precision_score(y_test, y_pred_knn))
+print("Recall:", recall_score(y_test, y_pred_knn))
+print("F1 Score:", f1_score(y_test, y_pred_knn))
+print("=====================================================")
+
+
