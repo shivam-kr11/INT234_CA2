@@ -367,5 +367,34 @@ data["gender"] = le.fit_transform(data["gender"])
 #================ ENCODING PREFERRED DOMAIN ================
 data = pd.get_dummies(data, columns=["preferred_domain"], dtype=int)
 
+#================FEATURES AND TARGET SELECTION ================
+X = data.drop([ "placed"], axis=1)
+y = data["placed"]
+#================ TRAIN TEST SPLIT ================
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.2,random_state=42,stratify=y)
+
+#================ TRAINING LOGISTIC REGRESSION ================
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
+
+model = LogisticRegression(class_weight="balanced", max_iter=1000,random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+#================ EVALUATING LOGISTIC REGRESSION ================
+print("================Logistice Regression ================")
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1 Score:", f1_score(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+print("=====================================================")
+
 
    
