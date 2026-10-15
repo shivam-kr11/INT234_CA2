@@ -348,5 +348,24 @@ for column in numerical_columns:
 
 print("Shape after removing outliers:", data.shape)
 
+#================ SCALING NUMERICAL COLUMNS ================
+
+from sklearn.preprocessing import MinMaxScaler
+
+numerical_columns = data.select_dtypes(include="number").columns
+
+scaler = MinMaxScaler()
+data[numerical_columns] = scaler.fit_transform(data[numerical_columns])
+
+#================ ENCODING GENDER ================
+print("Categorical Columns:")
+print(data.select_dtypes(include=["object", "category"]).columns)
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+data["gender"] = le.fit_transform(data["gender"])
+#================ ENCODING PREFERRED DOMAIN ================
+data = pd.get_dummies(data, columns=["preferred_domain"], dtype=int)
+
 
    
