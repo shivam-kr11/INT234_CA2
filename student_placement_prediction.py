@@ -348,31 +348,31 @@ for column in numerical_columns:
 
 print("Shape after removing outliers:", data.shape)
 
-#================ SCALING NUMERICAL COLUMNS ================
+#================ ENCODING GENDER LABEL ENCODING ================
 
-from sklearn.preprocessing import MinMaxScaler
-
-numerical_columns = data.select_dtypes(include="number").columns
-
-scaler = MinMaxScaler()
-data[numerical_columns] = scaler.fit_transform(data[numerical_columns])
-
-#================ ENCODING GENDER ================
-print("Categorical Columns:")
-print(data.select_dtypes(include=["object", "category"]).columns)
 from sklearn.preprocessing import LabelEncoder
-
 le = LabelEncoder()
 data["gender"] = le.fit_transform(data["gender"])
-#================ ENCODING PREFERRED DOMAIN ================
+
+#================ ENCODING PREFERRED DOMAIN ONE HOT ENCODING================
 data = pd.get_dummies(data, columns=["preferred_domain"], dtype=int)
 
-#================FEATURES AND TARGET SELECTION ================
-X = data.drop([ "placed"], axis=1)
+#================ SEPARATING FEATURES AND TARGET ================
+X = data.drop(["placed"], axis=1)
 y = data["placed"]
+
 #================ TRAIN TEST SPLIT ================
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.2,random_state=42,stratify=y)
+
+#================ SCALING NUMERICAL COLUMNS ================
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+X_train = X_train.copy()
+X_test = X_test.copy()
+numerical_columns = X_train.select_dtypes(include="number").columns
+X_train[numerical_columns] = scaler.fit_transform(X_train[numerical_columns])
+X_test[numerical_columns] = scaler.transform(X_test[numerical_columns])
 
 #================ TRAINING LOGISTIC REGRESSION ================
 from sklearn.linear_model import LogisticRegression
