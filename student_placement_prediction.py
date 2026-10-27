@@ -27,8 +27,6 @@ print(data.duplicated().sum())
 #================ CHECKING UNIQUE VALUES ================
 print(data.nunique())
 
-print(data.columns)
-
 #================ TARGET VARIABLE DISTRIBUTION ================
 print(data["placed"].value_counts())
 print(data["placed"].value_counts(normalize=True) * 100)
@@ -355,10 +353,10 @@ le = LabelEncoder()
 data["gender"] = le.fit_transform(data["gender"])
 
 #================ ENCODING PREFERRED DOMAIN ONE HOT ENCODING================
-data = pd.get_dummies(data, columns=["preferred_domain"], dtype=int)
+data = pd.get_dummies(data, columns=["preferred_domain"],dtype='int')
 
 #================ SEPARATING FEATURES AND TARGET ================
-X = data.drop(["placed"], axis=1)
+X = data.drop(["placed", "student_id"], axis=1)
 y = data["placed"]
 
 #================ TRAIN TEST SPLIT ================
@@ -450,10 +448,7 @@ print("Recall:", recall_score(y_test, y_pred_nb))
 print("F1 Score:", f1_score(y_test, y_pred_nb))
 print("=====================================================")
 
-
-
 #================ TRAINING DECISION TREE ================
-
 from sklearn.tree import DecisionTreeClassifier
 model_dt = DecisionTreeClassifier(random_state=42)
 model_dt.fit(X_train, y_train)
@@ -465,7 +460,56 @@ print("Accuracy:", accuracy_score(y_test, y_pred_dt))
 print("Precision:", precision_score(y_test, y_pred_dt))
 print("Recall:", recall_score(y_test, y_pred_dt))
 print("F1 Score:", f1_score(y_test, y_pred_dt))
-
 print("==============================================")
+
+#================ MODEL COMPARISON ================
+y_pred_lr = model.predict(X_test)
+
+comparison = pd.DataFrame({
+    "Model": ["Logistic Regression", "KNN", "Naive Bayes", "Decision Tree"],
+    "Accuracy": [
+        accuracy_score(y_test, y_pred_lr),
+        accuracy_score(y_test, y_pred_knn),
+        accuracy_score(y_test, y_pred_nb),
+        accuracy_score(y_test, y_pred_dt)
+    ],
+    "Precision": [
+        precision_score(y_test, y_pred_lr),
+        precision_score(y_test, y_pred_knn),
+        precision_score(y_test, y_pred_nb),
+        precision_score(y_test, y_pred_dt)
+    ],
+    "Recall": [
+        recall_score(y_test, y_pred_lr),
+        recall_score(y_test, y_pred_knn),
+        recall_score(y_test, y_pred_nb),
+        recall_score(y_test, y_pred_dt)
+    ],
+    "F1 Score": [
+        f1_score(y_test, y_pred_lr),
+        f1_score(y_test, y_pred_knn),
+        f1_score(y_test, y_pred_nb),
+        f1_score(y_test, y_pred_dt)
+    ]
+})
+
+print("================ MODEL COMPARISON ================")
+print(comparison)
+
+#================ MODEL ACCURACY COMPARISON ================
+plt.figure(figsize=(8, 5))
+sns.barplot(x="Model", y="Accuracy", data=comparison)
+plt.title("Model Accuracy Comparison")
+plt.xlabel("Model")
+plt.ylabel("Accuracy")
+plt.show()
+
+#================ MODEL F1 SCORE COMPARISON ================
+plt.figure(figsize=(8, 5))
+sns.barplot(x="Model", y="F1 Score", data=comparison)
+plt.title("Model F1 Score Comparison")
+plt.xlabel("Model")
+plt.ylabel("F1 Score")
+plt.show()
 
 
