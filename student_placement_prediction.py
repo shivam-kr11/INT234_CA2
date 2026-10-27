@@ -389,7 +389,7 @@ X_test[numerical_columns] = scaler.transform(X_test[numerical_columns])
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
 
-model = LogisticRegression(class_weight="balanced", max_iter=1000,random_state=42)
+model = LogisticRegression(max_iter=1000, random_state=42)
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
@@ -449,7 +449,7 @@ print("=====================================================")
 
 #================ TRAINING NAIVE BAYES ================
 from sklearn.naive_bayes import GaussianNB
-model_nb = GaussianNB(priors=[0.5, 0.5])
+model_nb = GaussianNB()
 model_nb.fit(X_train, y_train)
 y_pred_nb = model_nb.predict(X_test)
 
