@@ -1,3 +1,12 @@
+# ==============================================================================
+# PROJECT OBJECTIVES:
+# 1. Identify Key Placement Factors: Uncover how academic performance, technical skills, and projects influence student placement through data exploration.
+# 2. Ensure Data Quality: Clean dataset integrity by imputing missing values with medians and removing extreme outliers using IQR.
+# 3. Prepare ML-Ready Features: Transform categorical variables into numerical form (Label & One-Hot Encoding) and normalize feature scales using MinMaxScaler.
+# 4. Predict Placement Outcomes: Train and optimize diverse classification algorithms (Logistic Regression, KNN, Naive Bayes, Decision Tree) to accurately predict placements.
+# 5. Benchmark Model Performance: Compare all four classifiers across Accuracy, Precision, Recall, and F1-Score to determine the best model for deployment.
+# ==============================================================================
+
 #================ IMPORTING LIBRARIES ================
 import pandas as pd
 import numpy as np
@@ -7,6 +16,7 @@ import seaborn as sns
 #================ LOADING DATASET ================
 data = pd.read_csv("data/student_placement_train.csv")
 
+#================ OBJECTIVE 1: IDENTIFY KEY PLACEMENT FACTORS (EDA) ================
 #================ BASIC DATASET INFORMATION ================
 print(data.head())
 print(data.shape)
@@ -280,6 +290,7 @@ sns.heatmap(corr, cmap="coolwarm", annot=False)
 plt.title("Correlation Heatmap")
 plt.show()
 
+#================ OBJECTIVE 2: ENSURE DATA QUALITY (MISSING VALUES & OUTLIERS) ================
 #================ CHECKING MISSING VALUES ================
 
 print(data.isnull().sum())
@@ -346,6 +357,7 @@ for column in numerical_columns:
 
 print("Shape after removing outliers:", data.shape)
 
+#================ OBJECTIVE 3: PREPARE ML-READY FEATURES (ENCODING & SCALING) ================
 #================ ENCODING GENDER LABEL ENCODING ================
 
 from sklearn.preprocessing import LabelEncoder
@@ -372,6 +384,7 @@ numerical_columns = X_train.select_dtypes(include="number").columns
 X_train[numerical_columns] = scaler.fit_transform(X_train[numerical_columns])
 X_test[numerical_columns] = scaler.transform(X_test[numerical_columns])
 
+#================ OBJECTIVE 4: PREDICT PLACEMENT OUTCOMES (MODEL TRAINING) ================
 #================ TRAINING LOGISTIC REGRESSION ================
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
@@ -462,6 +475,7 @@ print("Recall:", recall_score(y_test, y_pred_dt))
 print("F1 Score:", f1_score(y_test, y_pred_dt))
 print("==============================================")
 
+#================ OBJECTIVE 5: BENCHMARK MODEL PERFORMANCE (MODEL COMPARISON) ================
 #================ MODEL COMPARISON ================
 y_pred_lr = model.predict(X_test)
 
