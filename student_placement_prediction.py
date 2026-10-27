@@ -526,4 +526,10 @@ plt.xlabel("Model")
 plt.ylabel("F1 Score")
 plt.show()
 
+#================ FINAL CONCLUSION ================
+# Conclusion -> Logistic Regression delivered the best overall performance with 83.4% accuracy and an F1-score of 0.834.
+# Naive Bayes also demonstrated strong balanced predictive capability (~82.2% accuracy), closely following Logistic Regression.
+# Therefore, Logistic Regression is selected as the optimal model for student placement prediction on this dataset.
+
+
 
