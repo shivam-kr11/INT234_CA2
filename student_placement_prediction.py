@@ -1,10 +1,14 @@
 # ==============================================================================
 # PROJECT OBJECTIVES:
-# 1. Identify Key Placement Factors: Uncover how academic performance, technical skills, and projects influence student placement through data exploration.
+# 1. Identify Key Placement Factors: Uncover how academic performance, technical skills,
+#    and projects influence student placement through data exploration.
 # 2. Ensure Data Quality: Clean dataset integrity by imputing missing values with medians and removing extreme outliers using IQR.
-# 3. Prepare ML-Ready Features: Transform categorical variables into numerical form (Label & One-Hot Encoding) and normalize feature scales using MinMaxScaler.
-# 4. Predict Placement Outcomes: Train and optimize diverse classification algorithms (Logistic Regression, KNN, Naive Bayes, Decision Tree) to accurately predict placements.
-# 5. Benchmark Model Performance: Compare all four classifiers across Accuracy, Precision, Recall, and F1-Score to determine the best model for deployment.
+# 3. Prepare ML-Ready Features: Transform categorical variables into numerical form (Label & One-Hot Encoding) and 
+#    normalize feature scales using MinMaxScaler.
+# 4. Predict Placement Outcomes: Train and optimize diverse classification algorithms (Logistic Regression,
+#    KNN, Naive Bayes, Decision Tree) to accurately predict placements.
+# 5. Benchmark Model Performance: Compare all four classifiers across Accuracy, Precision, Recall, 
+#    and F1-Score to determine the best model for deployment.
 # ==============================================================================
 
 #================ IMPORTING LIBRARIES ================
@@ -281,6 +285,38 @@ plt.ylabel("Number of Students")
 plt.xticks(rotation=45)
 plt.show()
 
+#================ CGPA VS PLACEMENT (BOXPLOT) ================
+plt.figure(figsize=(8, 5))
+sns.boxplot(x="placed", y="cgpa", data=data)
+plt.title("CGPA vs Placement")
+plt.xlabel("Placed (0 = No, 1 = Yes)")
+plt.ylabel("CGPA")
+plt.show()
+
+#================ CODING SCORE VS PLACEMENT (BOXPLOT) ================
+plt.figure(figsize=(8, 5))
+sns.boxplot(x="placed", y="coding_score", data=data)
+plt.title("Coding Score vs Placement")
+plt.xlabel("Placed (0 = No, 1 = Yes)")
+plt.ylabel("Coding Score")
+plt.show()
+
+#================ CGPA VS CODING SCORE (SCATTERPLOT) ================
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x="cgpa", y="coding_score", hue="placed", data=data, alpha=0.7)
+plt.title("CGPA vs Coding Score by Placement")
+plt.xlabel("CGPA")
+plt.ylabel("Coding Score")
+plt.show()
+
+#================ CGPA VS TECHNICAL SCORE (SCATTERPLOT) ================
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x="cgpa", y="technical_score", hue="placed", data=data, alpha=0.7)
+plt.title("CGPA vs Technical Score by Placement")
+plt.xlabel("CGPA")
+plt.ylabel("Technical Score")
+plt.show()
+
 #================ CORRELATION ANALYSIS ================
 
 corr = data.select_dtypes(include="number").drop(columns=["student_id"], errors="ignore").corr()
@@ -338,8 +374,19 @@ for column in numerical_columns:
 
     print(column, ":", len(outliers))
 
+#================ OUTLIER VISUALIZATION (BOXPLOT) ================
+plt.figure(figsize=(8, 4))
+sns.boxplot(x=data["cgpa"])
+plt.title("CGPA Boxplot (Outlier Detection)")
+plt.xlabel("CGPA")
+plt.show()
 
-    
+plt.figure(figsize=(8, 4))
+sns.boxplot(x=data["attendance_percentage"])
+plt.title("Attendance Percentage Boxplot (Outlier Detection)")
+plt.xlabel("Attendance Percentage")
+plt.show()
+
 #================ REMOVING OUTLIERS ================
 
 for column in numerical_columns:
@@ -407,6 +454,14 @@ print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 print("=====================================================")
 
+#================ LOGISTIC REGRESSION CONFUSION MATRIX ================
+plt.figure(figsize=(6, 4))
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt="d", cmap="Blues")
+plt.title("Logistic Regression Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
 #================ TRAINING KNN ================
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -447,6 +502,14 @@ print("Recall:", recall_score(y_test, y_pred_knn))
 print("F1 Score:", f1_score(y_test, y_pred_knn))
 print("=====================================================")
 
+#================ KNN CONFUSION MATRIX ================
+plt.figure(figsize=(6, 4))
+sns.heatmap(confusion_matrix(y_test, y_pred_knn), annot=True, fmt="d", cmap="Blues")
+plt.title("KNN Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
 #================ TRAINING NAIVE BAYES ================
 from sklearn.naive_bayes import GaussianNB
 model_nb = GaussianNB()
@@ -461,6 +524,14 @@ print("Recall:", recall_score(y_test, y_pred_nb))
 print("F1 Score:", f1_score(y_test, y_pred_nb))
 print("=====================================================")
 
+#================ NAIVE BAYES CONFUSION MATRIX ================
+plt.figure(figsize=(6, 4))
+sns.heatmap(confusion_matrix(y_test, y_pred_nb), annot=True, fmt="d", cmap="Blues")
+plt.title("Naive Bayes Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
 #================ TRAINING DECISION TREE ================
 from sklearn.tree import DecisionTreeClassifier
 model_dt = DecisionTreeClassifier(random_state=42)
@@ -474,6 +545,14 @@ print("Precision:", precision_score(y_test, y_pred_dt))
 print("Recall:", recall_score(y_test, y_pred_dt))
 print("F1 Score:", f1_score(y_test, y_pred_dt))
 print("==============================================")
+
+#================ DECISION TREE CONFUSION MATRIX ================
+plt.figure(figsize=(6, 4))
+sns.heatmap(confusion_matrix(y_test, y_pred_dt), annot=True, fmt="d", cmap="Blues")
+plt.title("Decision Tree Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
 
 #================ OBJECTIVE 5: BENCHMARK MODEL PERFORMANCE (MODEL COMPARISON) ================
 #================ MODEL COMPARISON ================
@@ -527,8 +606,8 @@ plt.ylabel("F1 Score")
 plt.show()
 
 #================ FINAL CONCLUSION ================
-# Conclusion -> Logistic Regression delivered the best overall performance with 83.4% accuracy and an F1-score of 0.834.
-# Naive Bayes also demonstrated strong balanced predictive capability (~82.2% accuracy), closely following Logistic Regression.
+# Conclusion -> Logistic Regression delivered the best overall performance with 86.0% accuracy and an F1-score of 0.830.
+# Naive Bayes also demonstrated strong balanced predictive capability (~84.3% accuracy and 0.814 F1-score), closely following Logistic Regression.
 # Therefore, Logistic Regression is selected as the optimal model for student placement prediction on this dataset.
 
 

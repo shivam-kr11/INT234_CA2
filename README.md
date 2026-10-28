@@ -41,11 +41,12 @@ The dataset contains records of 8,000 students with 28 attributes:
 1. **Exploratory Data Analysis (EDA):**
    * Checked summary statistics, null counts, duplicate records, and class balance.
    * Visualized distributions for CGPA, coding scores, mock interview scores, and attendance.
+   * Plotted **boxplots** and **scatterplots** (CGPA vs Coding Score / Technical Score) across placement status.
    * Created a correlation heatmap to understand relationships between features.
 
 2. **Data Cleaning & Handling Outliers:**
    * Handled missing values in 11 numerical columns using median imputation.
-   * Applied the IQR method ($Q_1 - 1.5 \times IQR$ to $Q_3 + 1.5 \times IQR$) to filter out unrealistic extreme values.
+   * Visualized outliers using **boxplots** and applied the IQR method ($Q_1 - 1.5 \times IQR$ to $Q_3 + 1.5 \times IQR$) to filter out unrealistic extreme values.
 
 3. **Feature Preprocessing:**
    * Used **Label Encoding** for `gender`.
@@ -60,7 +61,7 @@ The dataset contains records of 8,000 students with 28 attributes:
      * **K-Nearest Neighbors (KNN)** (tested $K=1$ to $20$)
      * **Gaussian Naive Bayes**
      * **Decision Tree**
-   * Evaluated each model on the test set and plotted comparative bar charts.
+   * Plotted **confusion matrix heatmaps** for each model alongside accuracy and F1-score comparative bar charts.
 
 ---
 
@@ -70,17 +71,17 @@ Here is the final performance comparison across all four models on the test set:
 
 | Model | Accuracy | Precision | Recall | F1 Score |
 | :--- | :---: | :---: | :---: | :---: |
-| **Logistic Regression** | **83.4%** | **81.7%** | **85.2%** | **83.4%** |
-| **Naive Bayes** | **82.2%** | **80.3%** | **84.6%** | **82.4%** |
-| **Decision Tree** | **70.8%** | **69.6%** | **71.9%** | **70.7%** |
-| **KNN (K=2)** | **66.5%** | **75.0%** | **47.5%** | **58.2%** |
+| **Logistic Regression** | **86.0%** | **82.7%** | **83.3%** | **0.830** |
+| **Naive Bayes** | **84.3%** | **79.3%** | **83.6%** | **0.814** |
+| **Decision Tree** | **79.4%** | **74.9%** | **74.9%** | **0.749** |
+| **KNN (K=2)** | **68.7%** | **70.5%** | **40.5%** | **0.515** |
 
 ---
 
 ## Final Conclusion
 
-* **Best Performer:** **Logistic Regression** achieved the highest overall performance, leading with **83.4% accuracy** and an **F1-score of 0.834**, offering an ideal balance between precision and recall.
-* **Runner-Up:** **Naive Bayes** also performed remarkably well with **82.2% accuracy**, proving to be a strong probabilistic baseline.
+* **Best Performer:** **Logistic Regression** achieved the highest overall performance, leading with **86.0% accuracy** and an **F1-score of 0.830**, offering an ideal balance between precision and recall.
+* **Runner-Up:** **Naive Bayes** also performed remarkably well with **84.3% accuracy** and **0.814 F1-score**, proving to be a strong probabilistic baseline.
 * **Key Placement Drivers:** Students with higher CGPA, solid coding/technical test scores, mock interview practice, and zero backlogs have significantly higher placement chances.
 
 ---
